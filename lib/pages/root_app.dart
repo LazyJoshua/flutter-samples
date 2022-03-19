@@ -1,10 +1,18 @@
+
 import 'package:flutter/material.dart';
+import 'package:sample_app/pages/animate_containier.dart';
+import 'package:sample_app/pages/async_demo.dart';
+import 'package:sample_app/pages/default_example.dart';
+import 'package:sample_app/pages/draggable_card.dart';
+import 'package:sample_app/pages/fade_animation.dart';
+import 'package:sample_app/pages/isolate_demo.dart';
+import 'package:sample_app/pages/life_cycle.dart';
+import 'package:sample_app/pages/linearlayout_demo.dart';
+import 'package:sample_app/pages/list_view_demo.dart';
+import 'package:sample_app/pages/state_example.dart';
 
-import 'animate_containier.dart';
 import 'home_page.dart';
-import 'my_page.dart';
-
-final _navigatorKey = GlobalKey<NavigatorState>();
+import 'signature_example.dart';
 
 class RootApp extends StatefulWidget {
   RootApp({Key key}) : super(key: key);
@@ -14,60 +22,40 @@ class RootApp extends StatefulWidget {
 }
 
 class _RootAppState extends State<RootApp> {
-  // final _naviPages = [
-  //   MyPage(
-  //       key: Key('/'),
-  //       name: '/',
-  //       desc: '首页',
-  //       builder: (context) => HomePage(
-  //             addPage: (MyPage page) {},
-  //           ))
-  // ];
-  final List<MyPage> _naviPages = [];
-
-  void _addPage(MyPage page) {
-    setState(() {
-      _naviPages.add(page);
-    });
-  }
-
   @override
   void initState() {
     super.initState();
-    HomePage homePage = HomePage(addPage: _addPage);
-    _naviPages.add(MyPage(
-        key: Key('/'), name: '/', desc: '首页', builder: (context) => homePage));
-    _naviPages.add(MyPage(
-        key: Key('/animate_container'),
-        name: '/animate_container',
-        desc: '可变容器动画',
-        builder: (context) => AnimateContainerDemo()));
-  }
-
-  bool _onPopPage(Route<dynamic> route, dynamic result) {
-    setState(() {
-      print('remove ${route.settings}');
-      _naviPages.remove(route.settings);
-    });
-    return route.didPop(result);
+    print('root app init state');
   }
 
   @override
   Widget build(BuildContext context) {
-    print('build: $_naviPages');
+    print('root app build');
     return MaterialApp(
-        title: 'Flutter Demo',
-        theme: ThemeData(
-          primarySwatch: Colors.blue,
-          // This makes the visual density adapt to the platform that you run
-          // the app on. For desktop platforms, the controls will be smaller and
-          // closer together (more dense) than on mobile platforms.
-          visualDensity: VisualDensity.adaptivePlatformDensity,
-        ),
-        home: Navigator(
-          key: _navigatorKey,
-          onPopPage: _onPopPage,
-          pages: List.of(_naviPages),
-        ));
+      title: 'Flutter Demo',
+      theme: ThemeData(
+        primarySwatch: Colors.blue,
+        // This makes the visual density adapt to the platform that you run
+        // the app on. For desktop platforms, the controls will be smaller and
+        // closer together (more dense) than on mobile platforms.
+        visualDensity: VisualDensity.adaptivePlatformDensity,
+      ),
+      routes: {
+        '/': (context) => HomePage(),
+        '/default': (context) => MyHomePage(
+              title: 'default',
+            ),
+        '/state': (context) => SampleAppPage(),
+        '/fade': (context) => FadeTest(),
+        '/signature': (context) => SignaturePage(),
+        '/async': (context) => AsyncDemoPage(),
+        '/isolate': (context) => IsolateDemoPage(),
+        '/lifecycle': (context) => LifeCycle(),
+        '/linearlayout': (context) => LinearLayoutTest(),
+        '/listview': (context) => ListViewTest(),
+        '/animate_container': (context) => AnimateContainerDemo(),
+        '/draggable_card': (context) => PhysicsCardDragDemo(),
+      },
+    );
   }
 }

@@ -13,20 +13,17 @@ import 'package:sample_app/pages/state_example.dart';
 
 import 'draggable_card.dart';
 
-
 typedef AddPage = void Function(MyPage page);
+
 class HomePage extends StatefulWidget {
-  final AddPage addPage;
-  const HomePage({Key key, this.addPage}) : super(key: key);
+  const HomePage({Key key}) : super(key: key);
 
   @override
-  _HomePageState createState() => _HomePageState(addPage);
+  _HomePageState createState() => _HomePageState();
 }
 
 class _HomePageState extends State<HomePage> {
-  final Function addPage;
-
-  _HomePageState(this.addPage);
+  _HomePageState();
 
   final _pages = [
     MyPage(
@@ -113,7 +110,7 @@ class _HomePageState extends State<HomePage> {
         onTap: () {
           setState(() {
             print('${_pages[pos].desc}');
-            addPage(_pages[pos]);
+            Navigator.pushNamed(context, _pages[pos].name);
           });
         },
       ),
